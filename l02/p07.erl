@@ -1,26 +1,15 @@
+% P07 (**) Выровнять структуру с вложеными списками:
+% Пример:
+% 1> p07:flatten([a,[],[b,[c,d],e]]).
+% [a,b,c,d,e]
 
 -module(p07).
--import(io,[format/1]). 
-
-
 -export([flatten/1]).
-% -include_lib("eunit/include/eunit.hrl").
 
 
-flatten(L)-> tail_flatten([], L).
+flatten(X)               -> tail_flatten(X,[]).
 
-
-tail_flatten(Result, [H| T]) -> tail_flatten([H|Result],T );
-tail_flatten(Result, [[H] | T]) -> tail_flatten([H |Result], T). 
-
-
-
-
-
-% test()-> {"test", [
-%     {"flat list": ?_assertEqual([1, 3, 333], flatten(Test_List))}
-%     ]}.
-
-% test()
-
-
+tail_flatten([],Acc)          -> Acc;
+tail_flatten([[]|T],Acc)      -> tail_flatten(T, Acc);
+tail_flatten([[_|_]=H|T],Acc) -> tail_flatten(T, tail_flatten(H,Acc));
+tail_flatten([H|T],Acc)       -> tail_flatten(T,Acc++[H]) .
